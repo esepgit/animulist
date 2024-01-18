@@ -1,4 +1,6 @@
+import Navbar from "./components/Navbar";
 import Card from "./components/Card";
+import Footer from "./components/Footer";
 
 function App() {
 
@@ -48,7 +50,9 @@ function App() {
 
   return (
     <>
-        <Card products={products} />
+      <Navbar />
+      <Card products={products} />
+      <Footer />
     </>
   );
 }
