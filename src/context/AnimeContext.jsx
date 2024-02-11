@@ -5,9 +5,10 @@ const AnimeContext = createContext()
 const AnimeProvider = ({ children }) => {
   const [animeDetail, setAnimeDetail] = useState(null)
   const [showAnimeDetail, setShowAnimeDetail] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const showAnime = (animeInfo) => {
-    console.log("info", animeInfo)
+    setIsLoading(true)
     setAnimeDetail({
       image: animeInfo.images.webp.image_url,
       title: animeInfo.title,
@@ -22,6 +23,9 @@ const AnimeProvider = ({ children }) => {
     })
 
     setShowAnimeDetail(true)
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 500);
   }
 
   const closeAnimeDetail = () => {
@@ -33,7 +37,8 @@ const AnimeProvider = ({ children }) => {
       animeDetail,
       showAnime,
       closeAnimeDetail,
-      showAnimeDetail
+      showAnimeDetail,
+      isLoading
     }}>
       {children}
     </AnimeContext.Provider>

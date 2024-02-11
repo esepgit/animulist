@@ -5,3 +5,7 @@
 body {
   background-color: #fafafa;
 }
+
+.hidden-scroll::-webkit-scrollbar {
+  display: none
+}

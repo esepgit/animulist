@@ -3,20 +3,15 @@ function AnimeDetail({ anime }) {
   console.log("detail", anime)
   return (
     <>
-      <div className="w-full absolute left-1/2 -translate-x-1/2 -translate-y-[130%] text-white font-bold text-3xl capitalize">
-        <h2 className="text-md">{anime?.title}</h2>
-        <span className="text-sm">{anime?.["title-jp"]}</span>
-      </div>
-
       <header className="flex h-[250px]">
-        <img className="w-[25%]" src={anime?.image} />
-        <div className="overflow-scroll px-2 text-lg">
+        <img className="lg:hidden w-[25%]" src={anime?.image} />
+        <div className="hidden-scroll overflow-scroll px-2 text-lg">
           <p>{anime?.synopsis}</p>
         </div>
       </header>
 
       <div className="mt-6">
-        <ul className="flex gap-2 justify-center my-4">
+        <ul className="flex gap-2 justify-center my-4 flex-wrap">
           {anime?.genres.map((genre) => (
             <li
               key={genre?.mal_id}
@@ -58,7 +53,7 @@ function AnimeDetail({ anime }) {
           </section>
 
           <section className="grid gap-2 mt-6">
-            <h4 className="font-bold capitalize">Themes</h4>
+            <h4 className="text-center font-bold capitalize">Themes</h4>
             <ul className="flex justify-center gap-3 flex-wrap">
               {anime?.themes.map((theme) => (
                 <li
