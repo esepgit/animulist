@@ -4,6 +4,7 @@ import axios from "axios"
 import useAnimeContext from "../hooks/useAnimeContext"
 import { animes as initialAnimes } from "../constants/initialAnimes"
 import Navigation from "./Navigation"
+import { IconSearch } from "@tabler/icons-react"
 
 let lastPage = 1000
 
@@ -19,7 +20,7 @@ function Animes() {
 
   useEffect(() => {
     axios
-      .get("https://api.jikan.moe/v4/anime")
+      .get("https://api.jikan.moe/v4/anime?sfw=true")
       .then(({data}) => {
         setAllAnimes(data.data)
         lastPage = data.pagination.last_visible_page
@@ -30,7 +31,7 @@ function Animes() {
   const handleClickPrev = () => {
     if (page > 1) {
       axios
-        .get(`https://api.jikan.moe/v4/anime?page=${page - 1}`)
+        .get(`https://api.jikan.moe/v4/anime?page=${page - 1}&sfw=true`)
         .then(({ data }) => {
           setAllAnimes(data.data)
           setPage(data.pagination.current_page)
@@ -42,7 +43,7 @@ function Animes() {
   const handleClickNext = () => {
     if (page < lastPage) {
       axios
-        .get(`https://api.jikan.moe/v4/anime?page=${page + 1}`)
+        .get(`https://api.jikan.moe/v4/anime?page=${page + 1}&sfw=true`)
         .then(({ data }) => {
           setAllAnimes(data.data);
           setPage(data.pagination.current_page);
@@ -51,21 +52,38 @@ function Animes() {
     } 
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    axios
+      .get(`https://api.jikan.moe/v4/anime?q=${e.target.search.value}&sfw=true`)
+      .then(({ data }) => {
+        setAllAnimes(data.data);
+        setPage(data.pagination.current_page);
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <section className="p-4 py-5">
-      <form>
-        <div className="bg-white p-2 rounded-2xl text-lg border">
+      <form onSubmit={handleSubmit}>
+        <div className="bg-white p-2 rounded-2xl text-lg border flex justify-between">
           <input
+            name="search"
             type="text"
-            className="outline-none"
+            className="outline-none w-[80%]"
             placeholder="Search your anime..."
-            value={animeName}
-            onChange={(e) => setAnimeName(e.target.value.toLowerCase())}
           />
+          <button type="submit" className="bg-orange-500 hover:bg-orange-300 rounded-lg p-1">
+            <IconSearch color="white" />
+          </button>
         </div>
       </form>
       <AnimeList animes={animeByName} showAnime={showAnime} />
-      <Navigation onClickPrev={handleClickPrev} onClickNext={handleClickNext} page={page} />
+      <Navigation
+        onClickPrev={handleClickPrev}
+        onClickNext={handleClickNext}
+        page={page}
+      />
     </section>
   );
 }
