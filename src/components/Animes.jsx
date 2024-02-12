@@ -18,9 +18,10 @@ function Animes() {
   const animeByName = allAnimes.filter(anime => anime.title.toLowerCase().includes(animeName))
   
 
+  //lo limito a 24 resultados para mejor visualizacion de front
   useEffect(() => {
     axios
-      .get("https://api.jikan.moe/v4/anime?sfw=true")
+      .get("https://api.jikan.moe/v4/anime?sfw=true&limit=24")
       .then(({data}) => {
         setAllAnimes(data.data)
         lastPage = data.pagination.last_visible_page
@@ -31,7 +32,7 @@ function Animes() {
   const handleClickPrev = () => {
     if (page > 1) {
       axios
-        .get(`https://api.jikan.moe/v4/anime?page=${page - 1}&sfw=true`)
+        .get(`https://api.jikan.moe/v4/anime?page=${page - 1}&sfw=true&limit=24`)
         .then(({ data }) => {
           setAllAnimes(data.data)
           setPage(data.pagination.current_page)
@@ -43,7 +44,7 @@ function Animes() {
   const handleClickNext = () => {
     if (page < lastPage) {
       axios
-        .get(`https://api.jikan.moe/v4/anime?page=${page + 1}&sfw=true`)
+        .get(`https://api.jikan.moe/v4/anime?page=${page + 1}&sfw=true&limit=24`)
         .then(({ data }) => {
           setAllAnimes(data.data);
           setPage(data.pagination.current_page);
@@ -55,7 +56,7 @@ function Animes() {
   const handleSubmit = (e) => {
     e.preventDefault()
     axios
-      .get(`https://api.jikan.moe/v4/anime?q=${e.target.search.value}&sfw=true`)
+      .get(`https://api.jikan.moe/v4/anime?q=${e.target.search.value}&sfw=true&limit=24`)
       .then(({ data }) => {
         setAllAnimes(data.data);
         setPage(data.pagination.current_page);
